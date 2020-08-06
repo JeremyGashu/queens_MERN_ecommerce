@@ -1,6 +1,13 @@
 const Order = require('../models/order')
 const mongoose = require('mongoose')
 
+// @Purpose = List all Orders
+// @Previlage = No
+// @Required fields =  No
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 404
+// @Request = GET
 exports.orders_all = (req, res) => {
     Order.find().populate({path:'order.itemId', componenet : 'Item'})
         .exec()
@@ -15,6 +22,13 @@ exports.orders_all = (req, res) => {
         })
 }
 
+// @Purpose = Get single order using id
+// @Previlage = No
+// @Required fields =  order_id
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 404
+// @Request = GET
 exports.order_by_id = (req, res) => {
     let id = req.params.order_id
     Order.findById(id).populate({path:'order.itemId', componenet : 'Item'}).
@@ -31,6 +45,13 @@ exports.order_by_id = (req, res) => {
         })
 }
 
+// @Purpose = Creating Order
+// @Previlage = No
+// @Required fields =  phoneNo and order
+// @Optional params = address and name
+// @ Success status code = 201
+// @ Faillure Status code = 400
+// @Request = POST
 exports.create_order = (req, res) => {
     //some validation needed
     const {name,phoneNo, order,deliveryAddress} = req.body
@@ -52,6 +73,13 @@ exports.create_order = (req, res) => {
     }
 }
 
+// @Purpose = Delete single Order
+// @Previlage = Minimal Admin 
+// @Required fields =  item_id
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 400
+// @Request = DELETE
 exports.delete_order = (req, res) => {
     let id = req.params.order_id
     try {
@@ -61,10 +89,17 @@ exports.delete_order = (req, res) => {
        }))
     } catch (error) {
         // console.log(error)
-        res.status(401).json({error : 'No Order found with this ID'})
+        res.status(400).json({error : 'No Order found with this ID'})
     }
 }
 
+// @Purpose = Mark Order as delivered
+// @Previlage = Minimal Admin
+// @Required fields =  order_id
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 400, 404
+// @Request = PATCH
 exports.mark_as_delivered = (req, res) => {
     let id = req.params.order_id
         try {
@@ -73,11 +108,17 @@ exports.mark_as_delivered = (req, res) => {
                 res.status(200).json({msg : 'Updated! ', val})
             }))
          } catch (error) {
-             res.status(401).json({error : 'No Order found with this ID'})
+             res.status(400).json({error : 'No Order found with this ID'})
          }
 }
 
-
+// @Purpose = List all uncheked/not delivered orders
+// @Previlage = Minimal Admin
+// @Required fields =  No
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 404
+// @Request = GET
 exports.unchecked_orders = (req, res) => {
     Order.find({delivered : false}).populate({path:'order.itemId', componenet : 'Item'})
         .exec()
@@ -92,6 +133,11 @@ exports.unchecked_orders = (req, res) => {
         })
 }
 
+// @Purpose = Handling error
+// @Previlage = No
+// @Required fields =  No
+// @Optional params = No
+// @ status code = 
 exports.error_handler = (req, res) => {
     res.status(404).json({
         error : 'Page Not Found!'

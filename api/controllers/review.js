@@ -1,6 +1,14 @@
 const Review = require('../models/reviews')
 const mongoose = require('mongoose')
 
+
+// @Purpose = List all Reviews
+// @Previlage = No
+// @Required fields =  No
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 404
+// @Request = GET
 exports.reviews_all = (req, res) => {
     Review.find()
         .exec()
@@ -15,6 +23,13 @@ exports.reviews_all = (req, res) => {
         })
 }
 
+// @Purpose = Get single reviews using id
+// @Previlage = No
+// @Required fields =  review_id
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 404
+// @Request = GET
 exports.review_by_id = (req, res) => {
     let id = req.params.review_id
     Review.findById(id).
@@ -31,6 +46,13 @@ exports.review_by_id = (req, res) => {
         })
 }
 
+// @Purpose = Creating Review
+// @Previlage = No
+// @Required fields =  review
+// @Optional params = No
+// @ Success status code = 201
+// @ Faillure Status code = 400
+// @Request = POST
 exports.create_review = (req, res) => {
     const {review} = req.body
     if(review) {
@@ -43,10 +65,17 @@ exports.create_review = (req, res) => {
         })
     }
     else {
-        res.status(401).json({error : 'Review Should Be Provided'})
+        res.status(400).json({error : 'Review Should Be Provided'})
     }
 }
 
+// @Purpose = Delete single Review
+// @Previlage = Minimal Admin
+// @Required fields =  category_id
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 400
+// @Request = DELETE
 exports.delete_review = (req, res) => {
     let id = req.params.review_id
     try {
@@ -55,10 +84,17 @@ exports.delete_review = (req, res) => {
            res.status(200).json({msg : 'Deleted!', val})
        }))
     } catch (error) {
-        res.status(401).json({error : 'No Review found with this ID'})
+        res.status(400).json({error : 'No Review found with this ID'})
     }
 }
 
+// @Purpose = Update Category
+// @Previlage = Minimal Admin
+// @Required fields =  name
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 400, 404
+// @Request = PATCH
 exports.update_review = (req, res) => {
     const {review} = req.body
     let id = req.params.review_id
@@ -69,14 +105,20 @@ exports.update_review = (req, res) => {
                 res.status(200).json({msg : 'Updated! ', val})
             }))
          } catch (error) {
-             res.status(401).json({error : 'No Review found with this ID'})
+             res.status(400).json({error : 'No Review found with this ID'})
          }
          } 
     else {
-        res.status(401).json({error : 'Review Should Be Provided'})
+        res.status(400).json({error : 'Review Should Be Provided'})
     }
 }
 
+// @Purpose = Handling error
+// @Previlage = No
+// @Required fields =  No
+// @Optional params = No
+// @ status code = 404
+// @Request = No
 exports.error_handler = (req, res) => {
     res.status(404).json({
         error : 'Page Not Found!'

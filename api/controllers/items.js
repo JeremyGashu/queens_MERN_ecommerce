@@ -2,6 +2,13 @@ const mongoose = require('mongoose')
 const Item = require('../models/items')
 const Discount = require('../models/discount')
 
+// @Purpose = List all items
+// @Previlage = No
+// @Required fields =  No
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 404
+// @Request = GET
 exports.get_all_items = (req, res) => {
     Item.find()
         .populate('category discountId')
@@ -17,6 +24,13 @@ exports.get_all_items = (req, res) => {
         })   
 }
 
+// @Purpose = Get single items using id
+// @Previlage = No
+// @Required fields =  item_id
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 404
+// @Request = GET
 exports.items_by_id = (req, res) => {
     let id = req.params.item_id
     Item.findById(id)
@@ -34,6 +48,13 @@ exports.items_by_id = (req, res) => {
         })
 }
 
+// @Purpose = Creating Item
+// @Previlage = Minimal Admin 
+// @Required fields =  name, category, price, description
+// @Optional params = category, description
+// @ Success status code = 201
+// @ Faillure Status code = 400
+// @Request = POST
 exports.create_item = (req, res) => {
     const {name, category, price, description} = req.body
     if(name && price) {
@@ -49,10 +70,17 @@ exports.create_item = (req, res) => {
         })
     }
     else {
-        res.status(401).json({error : 'Incomplete Fields! Required Fields {name, ,}'})
+        res.status(400).json({error : 'Incomplete Fields! Required Fields {name, ,}'})
     }
 }
 
+// @Purpose = Delete single Item
+// @Previlage = Minimal Admin 
+// @Required fields =  item_id
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 400
+// @Request = DELETE
 exports.delete_item = (req, res) => {
     let id = req.params.item_id
     try {
@@ -61,12 +89,19 @@ exports.delete_item = (req, res) => {
            res.status(200).json({msg : 'Deleted!', val})
        }))
     } catch (error) {
-        res.status(401).json({error : 'No Item found with this ID'})
+        res.status(400).json({error : 'No Item found with this ID'})
     }
 }
 
 
 
+// @Purpose = Update Item
+// @Previlage = Minimal Admin
+// @Required fields =  name, category, price, description
+// @Optional params = category, description
+// @ Success status code = 200
+// @ Faillure Status code = 400, 404
+// @Request = PATCH
 exports.update_item = (req, res) => {
     let id = req.params.item_id
     const {name, price, description, amount} = req.body
@@ -87,14 +122,21 @@ exports.update_item = (req, res) => {
             res.status(200).json({msg:'Updated', result})
             }
             else {
-                res.status(401).json({error : 'No Item found with this ID'})
+                res.status(400).json({error : 'No Item found with this ID'})
             }
         }).catch(err => res.status(401).json({error : 'Invalid Format Encounterd.'}))
     } catch (error) {
-        res.status(401).json({error : 'No Item found with this ID'})
+        res.status(400).json({error : 'No Item found with this ID'})
     }
 }
 
+// @Purpose = Add discount on an item
+// @Previlage = Minimal Admin
+// @Required fields =  name
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 400, 404
+// @Request = PATCH
 exports.add_discount_on_item = (req, res) => {
     let id = req.params.item_id
     const {percent} = req.body
@@ -130,18 +172,25 @@ exports.add_discount_on_item = (req, res) => {
                 })
             }
             else {
-                res.status(401).json({error : 'Percent should be less than 100'})
+                res.status(400).json({error : 'Percent should be less than 100'})
             }
         }
         else {
-            res.status(401).json({error : 'Percent Should Be number type'})
+            res.status(400).json({error : 'Percent Should Be number type'})
         }   
     }
     else {
-        res.status(401).json({error : 'Percent Should Be Provided'})
+        res.status(400).json({error : 'Percent Should Be Provided'})
     }
 }
 
+// @Purpose = Remove Discount from an item
+// @Previlage = Minimal Admin
+// @Required fields =  name
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 400, 404
+// @Request = PATCH
 exports.remove_discount_from_item = (req, res) => {
     let id = req.params.item_id
 
@@ -162,14 +211,21 @@ exports.remove_discount_from_item = (req, res) => {
                 }
             }
             else{
-                res.status(401).json({error : 'No Item found with this ID'})
+                res.status(400).json({error : 'No Item found with this ID'})
             }
-        }).catch(err => res.status(401).json({error : 'Invalid Format Encounterd.'}))
+        }).catch(err => res.status(400).json({error : 'Invalid Format Encounterd.'}))
     } catch (error) {
-        res.status(401).json({error : 'No Item found with this ID'})
+        res.status(400).json({error : 'No Item found with this ID'})
     }
 }
 
+// @Purpose = List all Discounted Items
+// @Previlage = No
+// @Required fields =  No
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 404
+// @Request = GET
 exports.discounted_items = (req, res) => {
     Item.find({onDiscount : true}).populate('category discountId').exec()
         .then(items => {
@@ -184,6 +240,13 @@ exports.discounted_items = (req, res) => {
         })
 }
 
+// @Purpose = List all newly added items(items added since three days)
+// @Previlage = No
+// @Required fields =  No
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 404
+// @Request = GET
 exports.newly_added_items = (req, res) => {
     let end = new Date()
     let start = new Date()
@@ -204,6 +267,13 @@ exports.newly_added_items = (req, res) => {
     })
 }
 
+// @Purpose = Search Items
+// @Previlage = No
+// @Required fields =  searchParam
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 404
+// @Request = GET
 exports.search_item_by_name = (req, res) => {
     let {searchParam} = req.query
     if(searchParam) {
@@ -215,10 +285,16 @@ exports.search_item_by_name = (req, res) => {
             })
     }
     else {
-        res.status(401).json({error : 'Search param must be provide'})
+        res.status(400).json({error : 'Search param must be provide'})
     }
 }
 
+// @Purpose = Handling error
+// @Previlage = No
+// @Required fields =  No
+// @Optional params = No
+// @ status code = 404
+// @Request = No
 exports.error_handler = (req, res) => {
     res.status(404).json({
         error : 'Page Not Found!'

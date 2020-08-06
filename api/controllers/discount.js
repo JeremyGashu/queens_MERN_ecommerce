@@ -1,6 +1,13 @@
 const Discount = require('../models/discount')
 const mongoose = require('mongoose')
 
+// @Purpose = List all discounts
+// @Previlage = No
+// @Required fields =  No
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 404
+// @Request = GET
 exports.discounts_all = (req, res) => {
     Discount.find()
         .exec()
@@ -15,6 +22,13 @@ exports.discounts_all = (req, res) => {
         })
 }
 
+// @Purpose = Get single discount using id
+// @Previlage = No
+// @Required fields =  discount_id
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 404
+// @Request = GET
 exports.discount_by_id = (req, res) => {
     let id = req.params.discount_id
     Discount.findById(id).
@@ -31,6 +45,13 @@ exports.discount_by_id = (req, res) => {
         })
 }
 
+// @Purpose = Creating Discount
+// @Previlage = Minimal Admin
+// @Required fields =  percent
+// @Optional params = No
+// @ Success status code = 201
+// @ Faillure Status code = 400
+// @Request = POST
 exports.create_discount = (req, res) => {
     const {percent} = req.body
     if(percent) {
@@ -50,10 +71,17 @@ exports.create_discount = (req, res) => {
         }   
     }
     else {
-        res.status(401).json({error : 'Percent Should Be Provided'})
+        res.status(400).json({error : 'Percent Should Be Provided'})
     }
 }
 
+// @Purpose = Delete single Discount
+// @Previlage = Minimal Admin 
+// @Required fields =  discount_id
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 400
+// @Request = DELETE
 exports.delete_discount = (req, res) => {
     let id = req.params.discount_id
     try {
@@ -62,10 +90,17 @@ exports.delete_discount = (req, res) => {
            res.status(200).json({msg : 'Deleted!', val})
        }))
     } catch (error) {
-        res.status(401).json({error : 'No Discount found with this ID'})
+        res.status(400).json({error : 'No Discount found with this ID'})
     }
 }
 
+// @Purpose = Update Discount
+// @Previlage = Minimal Admin
+// @Required fields =  percent
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 400, 404
+// @Request = PATCH
 exports.update_discount = (req, res) => {
     const {percent} = req.body
     let id = req.params.discount_id
@@ -77,18 +112,24 @@ exports.update_discount = (req, res) => {
                     res.status(200).json({msg : 'Updated! ', val})
                 }))
              } catch (error) {
-                 res.status(401).json({error : 'No Discount found with this ID'})
+                 res.status(400).json({error : 'No Discount found with this ID'})
              }
         }
         else {
-            res.status(401).json({error : 'Percent Should Be number type'})
+            res.status(400).json({error : 'Percent Should Be number type'})
         }
          }
     else {
-        res.status(401).json({error : 'Percent Should Be Provided'})
+        res.status(400).json({error : 'Percent Should Be Provided'})
     }
 }
 
+// @Purpose = Handling error
+// @Previlage = No
+// @Required fields =  No
+// @Optional params = No
+// @ status code = 404
+// @Request = No
 exports.error_handler = (req, res) => {
     res.status(404).json({
         error : 'Page Not Found!'
