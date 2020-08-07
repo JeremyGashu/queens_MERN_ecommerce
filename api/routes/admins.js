@@ -1,17 +1,22 @@
 const express = require('express')
 const AdminController = require('../controllers/admin')
+const SuperAdminAuthCheker = require('../middlewares/super_admin_auth')
 
 const router = express.Router()
 
-router.get('/', AdminController.admins_all)
+router.get('/', SuperAdminAuthCheker.superAdminAuthChecker, AdminController.admins_all)
 
-router.get('/:admin_id', AdminController.admin_by_id)
+router.get('/logout', AdminController.logout_admin)
 
-router.post('/', AdminController.create_admin)
+router.get('/:admin_id',SuperAdminAuthCheker.superAdminAuthChecker,   AdminController.admin_by_id)
 
-router.delete('/:admin_id', AdminController.delete_admin)
+router.post('/register',SuperAdminAuthCheker.superAdminAuthChecker, AdminController.create_admin)
 
-router.patch('/:admin_id', AdminController.update_admin_by_id)
+router.post('/login', AdminController.login_admin)
+
+router.delete('/:admin_id', SuperAdminAuthCheker.superAdminAuthChecker, AdminController.delete_admin)
+
+router.patch('/:admin_id', SuperAdminAuthCheker.superAdminAuthChecker, AdminController.update_admin_by_id)
 
 router.use(AdminController.error_handler)
 

@@ -28,7 +28,7 @@ exports.categories_all = (req, res) => {
             })
         }).
         catch(err => {
-            res.status(404).json({error : err})
+            res.status(404).json({error : true, msg : err})
         })
 }
 
@@ -47,11 +47,11 @@ exports.category_by_id = (req, res) => {
             if (category) {
                 res.status(200).json(category)
             } else {
-                res.status(404).json({error : 'No Category Found with this ID.'})
+                res.status(404).json({error : true, msg : 'No Category Found with this ID.'})
             }
         }).
         catch(err => {
-            res.status(404).json({error : 'No Category Found with this ID.'})
+            res.status(404).json({error : true, msg : 'No Category Found with this ID.'})
         })
 }
 
@@ -74,7 +74,7 @@ exports.create_category = (req, res) => {
         })
     }
     else {
-        res.status(400).json({error : 'Name Should Be Provided'})
+        res.status(400).json({error : true, msg : 'Name Should Be Provided'})
     }
 }
 
@@ -93,7 +93,7 @@ exports.delete_category = (req, res) => {
            res.status(200).json({msg : 'Deleted!', val})
        }))
     } catch (error) {
-        res.status(400).json({error : 'No Category found with this ID'})
+        res.status(400).json({error : true, msg : 'No Category found with this ID'})
     }
 }
 
@@ -114,11 +114,11 @@ exports.update_category = (req, res) => {
                 res.status(200).json({msg : 'Updated! ', val})
             }))
          } catch (error) {
-             res.status(404).json({error : 'No Category found with this ID'})
+             res.status(404).json({error : true, msg : 'No Category found with this ID'})
          }
          } 
     else {
-        res.status(400).json({error : 'Name Should Be Provided'})
+        res.status(400).json({error :true, msg : 'Name Should Be Provided'})
     }
 }
 

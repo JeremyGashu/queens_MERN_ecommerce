@@ -28,10 +28,12 @@ const app = express()
 
 app.use(cookieParser())
 app.use(morgan('dev'))
+
+app.use('/uploads',express.static('./assets/images/uploads'))
 app.use(express.urlencoded({extended : false}))
 app.use(express.json())
 
-app.use('/items', itemsRoute) 
+app.use('/items', itemsRoute)
 
 app.use('/discounts', discountRoute)
 

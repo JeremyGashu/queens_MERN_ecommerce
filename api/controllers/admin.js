@@ -1,6 +1,7 @@
 const Admin = require('../models/admins')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 // @Purpose = List all admins
 // @Previlage = Minimal Admin
@@ -19,7 +20,10 @@ exports.admins_all = (req, res) => {
             })
         }).
         catch(err => {
-            res.status(404).json({error : err})
+            res.status(500).json({
+                error : true,
+                msg : 'Some internal server error'
+            })
         })
 }
 
@@ -38,11 +42,11 @@ exports.admin_by_id = (req, res) => {
             if (admin) {
                 res.status(200).json(admin)
             } else {
-                res.status(404).json({error : 'No Admin Found with this ID.'})
+                res.status(404).json({error :true, msg : 'No Admin Found with this ID.'})
             }
         }).
         catch(err => {
-            res.status(404).json({error : 'No Admin Found with this ID.'})
+            res.status(404).json({error : true, msg : 'No Admin Found with this ID.'})
         })
 }
 
@@ -63,16 +67,16 @@ exports.create_admin = (req, res) => {
         .then(admin => {
             if(admin.length >= 1) {
                 // console.log(admin)
-                res.status(400).json({error : 'Phone number already registered'})
+                res.status(400).json({error :true , msg : 'Phone number already registered'})
             }
             else{
                 if(password.length < 8) {
-                    res.status(400).json({error : 'Password should be at least 8 characters'})
+                    res.status(400).json({error : true, msg : 'Password should be at least 8 characters'})
                 }
                 else {
                     bcrypt.hash(password,10,(err, hashed) => {
                         if(err) {
-                            res.status(400).json({error : err})
+                            res.status(500).json({error : true, msg : 'Internal server error endountered'})
                         }
                         else {
                             let newAdmin = new Admin({
@@ -92,11 +96,11 @@ exports.create_admin = (req, res) => {
             }
         }).catch(err => {
             console.log(err)
-            res.status(400).json({error : 'Some intername error happened.'})
+            res.status(500).json({error : true, msg : 'Some intername error happened.'})
         })        
     }
     else {
-        res.status(400).json({error : 'Phone number and password should be provided'})
+        res.status(400).json({error :true, msg : 'Phone number and password should be provided'})
     }
 }
 
@@ -112,7 +116,7 @@ exports.delete_admin = (req, res) => {
     let id = req.params.admin_id
     Admin.find({}).exec().then(admins => {
         if(admins.length <= 1) {
-            res.status(400).json({error : 'There must be at least one Admin'})
+            res.status(400).json({error :true, msg : 'There must be at least one Admin'})
         }
         else {
             try {
@@ -122,12 +126,12 @@ exports.delete_admin = (req, res) => {
                 }))
              } catch (error) {
                  console.log(error)
-                 res.status(404).json({error : 'No Admin found with this ID'})
+                 res.status(404).json({error : true, msg : 'No Admin found with this ID'})
              }
         }
     }).catch(err => {
         console.log(err)
-        res.status(400).json({error : 'No Admin found'})
+        res.status(400).json({error : true, msg : 'No Admin found'})
     })
 }
 
@@ -147,7 +151,7 @@ exports.update_admin_by_id = (req, res) => {
         .then(admin => {
             if(admin){
                 if(password.length < 8 || password != confirmPassword) {
-                    res.status(401).json({error : 'Password should be at least 8 characters and should match the confirmation password'})
+                    res.status(401).json({error : true, msg : 'Password should be at least 8 characters and should match the confirmation password'})
                 }
                 else {
                     bcrypt.hash(password,10,(err, hashed) => {
@@ -165,16 +169,74 @@ exports.update_admin_by_id = (req, res) => {
                 }
             }
             else {
-                res.status(400).json({error : 'No Admin found with this ID'})
+                res.status(400).json({error : true, msg : 'No Admin found with this ID'})
             }
         }).catch(err => {
             console.log(err)
-            res.status(400).json({error : 'Some internal error happened.'})
+            res.status(400).json({error : true, msg : 'Some internal error happened.'})
         })        
     }
     else {
-        res.status(400).json({error : 'password and cofirmationPassword should be provided'})
+        res.status(400).json({error : true, msg : 'password and cofirmationPassword should be provided'})
     }
+}
+
+// @Purpose = Authenticate the user
+// @Previlage = No
+// @Required fields =  phoneNo, password
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 400
+// @Request = POST
+exports.login_admin = (req, res) => {
+    const {phoneNo, password} = req.body
+    if(phoneNo && password) {
+        Admin.find({phoneNo}).exec()
+            .then(admins => {
+                if(admins.length > 0) {
+                    bcrypt.compare(password,admins[0].password,(err, result) => {
+                        if(err) {
+                            res.status(401).json({error : true, msg : 'Auth Failed!', success:false})
+                        }
+                        if(result) {
+                            let token = jwt.sign({
+                                phoneNo : admins[0].phoneNo, 
+                                superAdmin : admins[0].superAdmin
+                            }, 'PLEASE_CHANGE_IT_LATER')
+                            //instead of passing the token as a response, just put it in cookie
+                            res.cookie('queens_auth_token',token)
+                            res.status(200).json({success : true, admin:admins[0], token})
+                        }
+                        else {
+                            res.status(401).json({error : true, msg : 'Auth Failed!', success:false})
+                        }
+                    })
+                }
+                else {
+                    res.status(401).json({error : true, msg : 'Auth Failed!', success:false})
+                }
+            })
+            .catch(err => {
+                res.status(401).json({error : true, msg : 'Auth Failed!', success:false})
+            })
+    }
+    else {
+        res.status(400).json({error :true, msg : 'Phone number and password are required fields'})
+    }
+}
+
+// @Purpose = Logout the user
+// @Previlage = No
+// @Required fields =  No
+// @Optional params = No
+// @ Success status code = 200
+// @Request = GET
+exports.logout_admin = (req, res) => {
+    res.clearCookie('queens_auth_token')
+    res.status(200).json({
+        success : true,
+        error : false
+    })
 }
 
 // @Purpose = Handling error

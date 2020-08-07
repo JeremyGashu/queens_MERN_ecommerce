@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const Item = require('../models/items')
 const Discount = require('../models/discount')
+const Review = require('../models/reviews')
+const ItemCategory = require('../utils/category')
 
 // @Purpose = List all items
 // @Previlage = No
@@ -11,7 +13,7 @@ const Discount = require('../models/discount')
 // @Request = GET
 exports.get_all_items = (req, res) => {
     Item.find()
-        .populate('category discountId')
+        .populate('category discountId review')
         .exec()
         .then(result => {
             res.status(200).json({
@@ -20,7 +22,7 @@ exports.get_all_items = (req, res) => {
             })
         }).
         catch(err => {
-            res.status(404).json({error : err})
+            res.status(404).json({error : true, msg : err})
         })   
 }
 
@@ -34,43 +36,102 @@ exports.get_all_items = (req, res) => {
 exports.items_by_id = (req, res) => {
     let id = req.params.item_id
     Item.findById(id)
-        .populate('category discountId')
+        .populate('category discountId review')
         .exec().
         then(item => {
             if (item) {
                 res.status(200).json(item)
             } else {
-                res.status(404).json({error : 'No Item Found with this ID.'})
+                res.status(404).json({error : true, msg : 'No Item Found with this ID.'})
             }
         }).
         catch(err => {
-            res.status(404).json({error : 'No Item Found with this ID.'})
+            res.status(404).json({error : true, msg : 'No Item Found with this ID.'})
         })
 }
 
 // @Purpose = Creating Item
 // @Previlage = Minimal Admin 
-// @Required fields =  name, category, price, description
+// @Required fields =  name, price
 // @Optional params = category, description
 // @ Success status code = 201
 // @ Faillure Status code = 400
 // @Request = POST
 exports.create_item = (req, res) => {
+    
     const {name, category, price, description} = req.body
+
     if(name && price) {
         let newItem = new Item({
             _id : new mongoose.Types.ObjectId(),
             name,
             price,
         })
+
         if(description) newItem.description = description
-        if(category) newItem.category = category
+        if(category) {
+            console.log(ItemCategory[category])
+            if(ItemCategory[category]) {
+                newItem.category = ItemCategory[category]
+            }
+            else {
+                newItem.category = ItemCategory.OTHERS
+            }
+        }
+        if(req.file) {
+            if(req.file.filename) {
+                newItem.imageName = req.file.filename
+            }
+            else {
+                newItem.imageName = 'queens_image.jpg'
+            }
+        }
+        else {
+            newItem.imageName = 'queens_image.jpg'
+        }
         newItem.save().then(() => {
             res.status(201).json({msg:'Created!',item : newItem})
         })
     }
     else {
-        res.status(400).json({error : 'Incomplete Fields! Required Fields {name, ,}'})
+        res.status(400).json({error : true, msg : 'Incomplete Fields! Required Fields {name, price,}'})
+    }
+}
+
+// @Purpose = Adding Review to an item
+// @Previlage = No 
+// @Required fields =  item_id  and review
+// @Optional params = No
+// @ Success status code = 200
+// @ Faillure Status code = 400
+// @Request = POST
+exports.add_review_on_item = (req, res) => {
+    let id = req.params.item_id
+    const {review} = req.body
+    if(review) {
+        let revId = new mongoose.Types.ObjectId();
+        let newReview = new Review({
+            _id : revId,
+            review,
+        })
+        newReview.save().then(() => {
+            console.log()
+        })
+
+        Item.findById(id).exec()
+        .then(item => {
+            if(item) {
+                item.review = [...item.review, revId]
+                item.save()
+                res.status(200).json({msg:'Review Added', item})
+            }
+            else {
+                res.status(400).json({error :true, msg : 'No item found with this id'})
+            }
+        })
+    }
+    else {
+        res.status(400).json({error : true, msg : 'Review Should Be Provided'})
     }
 }
 
@@ -89,11 +150,9 @@ exports.delete_item = (req, res) => {
            res.status(200).json({msg : 'Deleted!', val})
        }))
     } catch (error) {
-        res.status(400).json({error : 'No Item found with this ID'})
+        res.status(400).json({error : true, msg : 'No Item found with this ID'})
     }
 }
-
-
 
 // @Purpose = Update Item
 // @Previlage = Minimal Admin
@@ -122,11 +181,11 @@ exports.update_item = (req, res) => {
             res.status(200).json({msg:'Updated', result})
             }
             else {
-                res.status(400).json({error : 'No Item found with this ID'})
+                res.status(400).json({error : true, msg : 'No Item found with this ID'})
             }
-        }).catch(err => res.status(401).json({error : 'Invalid Format Encounterd.'}))
+        }).catch(err => res.status(401).json({error : true, msg : 'Invalid Format Encounterd.'}))
     } catch (error) {
-        res.status(400).json({error : 'No Item found with this ID'})
+        res.status(400).json({error : true, msg : 'No Item found with this ID'})
     }
 }
 
@@ -151,7 +210,6 @@ exports.add_discount_on_item = (req, res) => {
 
             newDiscount.save().then(() => {
                 // res.status(201).json({msg:'Created!',discount : newDiscount})
-                console.log('Discount Ceated.')
             })
             Item.findById(id)
                 .populate('category')
@@ -164,23 +222,23 @@ exports.add_discount_on_item = (req, res) => {
                         item.save()
                         res.status(200).json({msg:'Discounted!', item})
                     } else {
-                        res.status(404).json({error : 'No Item Found with this ID.'})
+                        res.status(404).json({error : true, msg : 'No Item Found with this ID.'})
                     }
                 }).
                 catch(err => {
-                    res.status(404).json({error : 'No Item Found with this ID.'})
+                    res.status(404).json({error : true, msg : 'No Item Found with this ID.'})
                 })
             }
             else {
-                res.status(400).json({error : 'Percent should be less than 100'})
+                res.status(400).json({error : true, msg : 'Percent should be less than 100'})
             }
         }
         else {
-            res.status(400).json({error : 'Percent Should Be number type'})
+            res.status(400).json({error : true, msg : 'Percent Should Be number type'})
         }   
     }
     else {
-        res.status(400).json({error : 'Percent Should Be Provided'})
+        res.status(400).json({error : true, msg : 'Percent Should Be Provided'})
     }
 }
 
@@ -193,7 +251,6 @@ exports.add_discount_on_item = (req, res) => {
 // @Request = PATCH
 exports.remove_discount_from_item = (req, res) => {
     let id = req.params.item_id
-
     try {
         Item.findById({_id :mongoose.Types.ObjectId(id)}).exec().then(result => {
             if(result) {
@@ -201,7 +258,7 @@ exports.remove_discount_from_item = (req, res) => {
                     result.onDiscount = false
                     Discount.deleteOne({_id:result.discountId}).exec()
                         .then(val => console.log(val))
-                        .catch(err => res.status(401).json({error : 'No discount found.'}))
+                        .catch(err => res.status(401).json({error : true, msg : 'No discount found.'}))
                     result.discountId = null
                     result.save()
                     res.status(200).json({msg:'Discount Removed', result})
@@ -211,9 +268,9 @@ exports.remove_discount_from_item = (req, res) => {
                 }
             }
             else{
-                res.status(400).json({error : 'No Item found with this ID'})
+                res.status(400).json({error : true, msg : 'No Item found with this ID'})
             }
-        }).catch(err => res.status(400).json({error : 'Invalid Format Encounterd.'}))
+        }).catch(err => res.status(400).json({error : true, msg : 'Invalid Format Encounterd.'}))
     } catch (error) {
         res.status(400).json({error : 'No Item found with this ID'})
     }
@@ -236,7 +293,7 @@ exports.discounted_items = (req, res) => {
         })
         .catch(err => {
             console.log(err)
-            res.status(404).json({error : 'No discounted items found.'})
+            res.status(404).json({error : true, msg : 'No discounted items found.'})
         })
 }
 
@@ -263,7 +320,7 @@ exports.newly_added_items = (req, res) => {
     }).
     catch(err => {
         console.log(err)
-        res.status(404).json({error : 'No new items found..'})
+        res.status(404).json({error : true, msg : 'No new items found..'})
     })
 }
 
@@ -285,7 +342,7 @@ exports.search_item_by_name = (req, res) => {
             })
     }
     else {
-        res.status(400).json({error : 'Search param must be provide'})
+        res.status(400).json({error : true, msg : 'Search param must be provide'})
     }
 }
 

@@ -12,7 +12,7 @@ const itemSchema = new mongoose.Schema({
     category : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Category',
-        default : new mongoose.Types.ObjectId('5f29823373817f4b3aa9da25')
+        default : new mongoose.Types.ObjectId('5f2d419cf88b381a1c5ced34')
     },
     price : {
         type : Number,
@@ -39,6 +39,10 @@ const itemSchema = new mongoose.Schema({
         type : Number,
         default : 0
     },
+    imageName : {
+        type : 'String',
+        default : 'queesns_logo.jpg'
+    }
 })
 
 const Item = module.exports = mongoose.model('Item',itemSchema)

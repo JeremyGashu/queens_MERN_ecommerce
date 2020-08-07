@@ -11,6 +11,7 @@ const reviewSchema = new mongoose.Schema({
     },
     review : {
         type : String,
+        required : true
     },
     addedOn : {
         type: mongoose.Schema.Types.Date,

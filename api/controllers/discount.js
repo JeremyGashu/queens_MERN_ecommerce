@@ -18,7 +18,7 @@ exports.discounts_all = (req, res) => {
             })
         }).
         catch(err => {
-            res.status(404).json({error : err})
+            res.status(404).json({error : true, msg : err})
         })
 }
 
@@ -37,11 +37,11 @@ exports.discount_by_id = (req, res) => {
             if (discount) {
                 res.status(200).json(discount)
             } else {
-                res.status(404).json({error : 'No Discount Found with this ID.'})
+                res.status(404).json({error : true, msg : 'No Discount Found with this ID.'})
             }
         }).
         catch(err => {
-            res.status(404).json({error : 'No Discount Found with this ID.'})
+            res.status(404).json({error : true, msg : 'No Discount Found with this ID.'})
         })
 }
 
@@ -67,11 +67,11 @@ exports.create_discount = (req, res) => {
             })
         }
         else {
-            res.status(401).json({error : 'Percent Should Be number type'})
+            res.status(401).json({error : true, msg : 'Percent Should Be number type'})
         }   
     }
     else {
-        res.status(400).json({error : 'Percent Should Be Provided'})
+        res.status(400).json({error : true, msg : 'Percent Should Be Provided'})
     }
 }
 
@@ -90,7 +90,7 @@ exports.delete_discount = (req, res) => {
            res.status(200).json({msg : 'Deleted!', val})
        }))
     } catch (error) {
-        res.status(400).json({error : 'No Discount found with this ID'})
+        res.status(400).json({error : true, msg : 'No Discount found with this ID'})
     }
 }
 
@@ -112,15 +112,15 @@ exports.update_discount = (req, res) => {
                     res.status(200).json({msg : 'Updated! ', val})
                 }))
              } catch (error) {
-                 res.status(400).json({error : 'No Discount found with this ID'})
+                 res.status(400).json({error : true, msg : 'No Discount found with this ID'})
              }
         }
         else {
-            res.status(400).json({error : 'Percent Should Be number type'})
+            res.status(400).json({error : true, msg : 'Percent Should Be number type'})
         }
          }
     else {
-        res.status(400).json({error : 'Percent Should Be Provided'})
+        res.status(400).json({error : true, msg : 'Percent Should Be Provided'})
     }
 }
 

@@ -18,7 +18,7 @@ exports.orders_all = (req, res) => {
             })
         }).
         catch(err => {
-            res.status(404).json({error : err})
+            res.status(404).json({error : true, msg : err})
         })
 }
 
@@ -37,11 +37,11 @@ exports.order_by_id = (req, res) => {
             if(order) {
                 res.status(200).json(order)
             }
-            else {res.status(404).json({error : 'No Order Found with this ID.'})}
+            else {res.status(404).json({error : true, msg : 'No Order Found with this ID.'})}
             
         }).
         catch(err => {
-            res.status(404).json({error : 'No Order Found with this ID.'})
+            res.status(404).json({error : true, msg : 'No Order Found with this ID.'})
         })
 }
 
@@ -69,7 +69,7 @@ exports.create_order = (req, res) => {
         })
     }
     else {
-        res.status(401).json({error : 'Incomplete Fields! Required Fields {phoneNo, order...}'})
+        res.status(401).json({error : true, msg : 'Incomplete Fields! Required Fields {phoneNo, order...}'})
     }
 }
 
@@ -89,7 +89,7 @@ exports.delete_order = (req, res) => {
        }))
     } catch (error) {
         // console.log(error)
-        res.status(400).json({error : 'No Order found with this ID'})
+        res.status(400).json({error : true, msg : 'No Order found with this ID'})
     }
 }
 
@@ -108,7 +108,7 @@ exports.mark_as_delivered = (req, res) => {
                 res.status(200).json({msg : 'Updated! ', val})
             }))
          } catch (error) {
-             res.status(400).json({error : 'No Order found with this ID'})
+             res.status(400).json({error : true, msg : 'No Order found with this ID'})
          }
 }
 
@@ -129,7 +129,7 @@ exports.unchecked_orders = (req, res) => {
             })
         }).
         catch(err => {
-            res.status(404).json({error : err})
+            res.status(404).json({error : true, msg : err})
         })
 }
 

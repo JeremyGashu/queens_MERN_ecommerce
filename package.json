@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Ermias Gashu & Nebiyu Aynalem",
+  "author": "Ermias Gashu & Nebiyu",
   "license": "ISC",
   "devDependencies": {
     "morgan": "^1.10.0",
@@ -17,6 +17,7 @@
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.7.7"
+    "mongoose": "^5.7.7",
+    "multer": "^1.4.2"
   }
 }
