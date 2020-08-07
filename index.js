@@ -46,7 +46,12 @@ app.use('/orders', orderRoute)
 app.use('/admins', adminRoute)
 
 app.use((req, res) => {
-    res.status(404).json({error:'Page Not Found'})
+    res.status(200).json(
+        {
+            routes : ['/admins', '/categories', '/discounts', '/items', '/reviews', 'orders'],
+            authors : 'Ermias Gashu and Nebiyu'
+        }
+    )
 })
 
 const PORT = process.env.PORT || 5000
