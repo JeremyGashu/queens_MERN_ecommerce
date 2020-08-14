@@ -2,6 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const path = require('path')
 
 const cookieParser = require('cookie-parser')
 
@@ -45,6 +46,12 @@ app.use('/reviews', reviewRoute)
 app.use('/orders', orderRoute)
 
 app.use('/admins', adminRoute)
+
+
+// app.get('*', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+// })
+
 
 app.use((req, res) => {
     res.status(200).json(
