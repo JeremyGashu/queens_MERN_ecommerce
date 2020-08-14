@@ -1,0 +1,8 @@
+.old-price {
+    text-decoration-line: line-through;
+    padding: 4px;
+}
+
+.new-price {
+    color: brown;
+}

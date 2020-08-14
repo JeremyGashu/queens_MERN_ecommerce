@@ -1,0 +1,135 @@
+.carts-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 30px;
+	margin: 20px;
+}
+
+.cart {
+	padding: 20px;
+	margin: 5px;
+	box-shadow: 1px 1px 5px 1px #444;
+
+	width: 70vw;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+.name-price {
+	flex: 2;
+}
+.name-price div{
+	padding-top: 10px;
+}
+.new-price{
+	font-weight: bold;
+}
+.name-price p{
+    font-weight: bold;
+    font-size: 14px;
+}
+.amount {
+	flex: 1;
+}
+.delete-btn {
+	flex: 1;
+	/* padding: 20px; */
+}
+.delete-btn button {
+	width: 60px;
+	height:40px;
+	cursor: pointer;
+	outline: none;
+	border: 0px;
+	background-color: rgb(77, 0, 0);
+	color: white;
+	border-radius: 10%;
+	transition: all 0.2s ease;
+}
+
+.delete-btn button:hover{
+
+	background-color: rgb(184, 0, 0);
+	transform: scale(1.1);
+}
+
+.bill-container{
+	padding: 15px;
+	margin: 20px;
+	border-radius: 20px;
+	border-top: 1px solid rgb(206, 206, 206);
+	flex:1;
+	width:70%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+.bill {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	box-shadow: 1px 1px 5px 1px rgb(209, 209, 209);
+	margin: 30px;
+	border-radius: 10px;
+}
+.bill-price{
+	font-weight: bold;
+}
+
+.delivery{
+	box-shadow: 1px 1px 5px 1px rgb(156, 156, 156);
+	padding: 10px;
+}
+
+.delivery form input{
+	display: block;
+	width: 40vw;
+	padding: 10px 13px;
+	margin: 16px;
+	border: 2px solid rgba(0, 53, 228, 0.438);
+	border-radius: 5px;
+	outline: none;
+}
+
+.delivery form button {
+	width: 100px;
+	height: 40px;
+	padding: 10px 13px;
+	margin-left: 16px;
+	text-align: center;
+	border-radius: 5px;
+	outline: none;
+	cursor: pointer;
+	color: white;
+	background-color: rgb(207, 3, 3);;
+	border: none;
+}
+
+@media (max-width : 860px) {
+    .cart {
+		padding: 20px;
+		margin: 5px;
+		box-shadow: 1px 1px 5px 1px #444;
+		width: 92vw;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.name-price p{
+		font-weight: bold;
+		font-size: 12px;
+	}
+
+	.name-price span{
+		font-size: 14px;
+	}
+	.delivery form input {
+		width: 70vw;
+	}
+}

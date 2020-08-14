@@ -11,7 +11,7 @@ router.get('/unchecked', OrderController.unchecked_orders)
 
 router.get('/:order_id', OrderController.order_by_id)
 
-router.post('/', AdminAuthCecker.adminAuthChecker, OrderController.create_order)
+router.post('/',OrderController.create_order)
 
 router.delete('/:order_id', AdminAuthCecker.adminAuthChecker, OrderController.delete_order)
 

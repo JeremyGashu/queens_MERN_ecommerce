@@ -1,0 +1,92 @@
+
+.nav-item {
+	font-weight: bold;
+}
+
+nav {
+	display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 5px 5px 5px rgb(211, 211, 211);
+    height: 10vh;
+    position: relative;
+}
+
+nav ul {
+    display: flex;
+	justify-content: space-around;
+	flex-basis: 30%;
+}
+
+nav ul li {
+	list-style-type: none;
+}
+
+nav ul li a, nav h3 a {
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.1s ease;
+    font-size: 13px;
+    color: rgb(46, 46, 46);
+}
+
+nav ul li:hover a, nav h3:hover a{
+    color: rgb(95, 95, 95);
+}
+.brand a{
+    color: brown;
+    font-size: 23px;
+}
+nav div {
+    flex-basis: 20%;
+}
+nav div input {
+    width: 100%;
+    padding: 10px 10px;
+    border: none;
+    outline: none;
+    border: 1px solid rgb(233, 233, 233);
+    border-radius: 5px;
+}
+.centered {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    padding: 10px;
+    margin: 5px;
+    border-bottom: 1px solid rgb(246, 246, 246);
+}
+/* .nav-toggler {
+    opacity: 0.8;
+    width: 15px;
+    cursor: pointer; */
+    /* display: none; */
+    /* position: absolute;
+    top: 5px;
+    right: 10px;
+} */
+
+@media (max-width : 700px) {
+    nav{
+        display: flex;
+        flex-direction: column;
+        height: 40vh;
+    }
+    
+    nav ul {
+        display: flex;
+        flex-direction: column;
+    }
+    nav input{
+        width: 80vw
+    }
+    nav ul li {
+        padding: 5px;
+        text-align: center;
+    }
+    nav ul li a{
+        font-size: 16px;
+        margin-bottom: 5px;
+        border-bottom: 1px solid rgb(246, 213, 213);
+    }
+}

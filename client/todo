@@ -1,0 +1,17 @@
+send feedback
+view carts in a good way and in more pleasan way
+send order
+
+<div className="name-price">
+				<p>{`${cart.item.name}`}</p>
+				{!cart.item.onDiscount ? (
+					<div style={{textAlign:'left'}} className="price">
+						<span>{cart.item.price}</span>
+					</div>
+				) : (
+					<div className="price">
+						<span className="old-price">{`${oldPrice} ETB  `} </span>{' '}
+						<span className="new-price"> {`${discountedPrice} ETB`}</span>
+					</div>
+				)}
+			</div>

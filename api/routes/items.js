@@ -44,7 +44,7 @@ router.get('/:item_id', ItemsController.items_by_id)
 
 router.post('/',upload.single('itemImage'), AdminAuthCecker.adminAuthChecker,ItemsController.create_item)
 
-router.post('/add_review/:item_id', AdminAuthCecker.adminAuthChecker, ItemsController.add_review_on_item)
+router.post('/add_review/:item_id', ItemsController.add_review_on_item)
 
 router.delete('/:item_id', AdminAuthCecker.adminAuthChecker, ItemsController.delete_item)
 

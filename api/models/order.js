@@ -5,16 +5,10 @@ const orderSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         required : true
     },
-    order : [
-        {
-            itemId : {
-                type : mongoose.Schema.Types.ObjectId,ref:'Item'
-            },
-            amount : {
-                type : Number,default : 1
-            }
-        }
-    ],
+    order : {
+        type:String,
+        required : true
+    },
     phoneNo : {
         type : String,
         required : true
