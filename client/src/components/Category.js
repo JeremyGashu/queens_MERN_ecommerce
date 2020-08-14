@@ -1,7 +1,7 @@
 import React from 'react';
 import '../category.css'
 import {useDispatch} from 'react-redux'
-import { selectCategory } from '../actions/item_actions';
+import { selectCategory, exitSearch } from '../actions/item_actions';
 
 const Category = props => {
 	let extraClass = props.collapsed ? 'collapsed' : 'released'
@@ -12,6 +12,7 @@ const Category = props => {
 		e.preventDefault()
 		const category = e.target.attributes.category.nodeValue
 		dispatch(selectCategory(category))
+		dispatch(exitSearch())
 		
 	}
 	return (
