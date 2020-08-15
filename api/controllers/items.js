@@ -73,11 +73,13 @@ exports.create_item = (req, res) => {
             console.log(ItemCategory[category])
             if(ItemCategory[category]) {
                 newItem.category = ItemCategory[category]
+                console.log(ItemCategory[category])
             }
             else {
                 newItem.category = ItemCategory.OTHERS
+                console.log(ItemCategory.OTHERS)
             }
-        }
+        } 
         if(req.file) {
             if(req.file.filename) {
                 newItem.imageName = req.file.filename

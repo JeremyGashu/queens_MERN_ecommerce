@@ -17,7 +17,7 @@ const App = (props) => {
             <Route exact path='/' component={Home}/>
             <Route path='/contact_us' component={ContactUs}/>
             <Route path='/cart' component={Carts}/>
-            <Route path='/items/:item_id' component={ItemDetail} />
+            <Route path='/items_detail/:item_id' component={ItemDetail} />
           </Switch>
       <Footer />
       </div>

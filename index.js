@@ -12,8 +12,10 @@ const discountRoute = require('./api/routes/discounts')
 const orderRoute = require('./api/routes/orders')
 const adminRoute = require('./api/routes/admins')
 
+let devurl = 'mongodb://localhost/queens_project'
+let prourl = 'mongodb+srv://ermias123:ermias123@cluster0.bxdjv.mongodb.net/queens_project?retryWrites=true&w=majority'
 
-mongoose.connect('mongodb+srv://ermias123:ermias123@cluster0.bxdjv.mongodb.net/queens_project?retryWrites=true&w=majority', {useCreateIndex : true,useNewUrlParser : true, useUnifiedTopology : true})
+mongoose.connect(prourl, {useCreateIndex : true,useNewUrlParser : true, useUnifiedTopology : true})
 
 let db = mongoose.connection
 

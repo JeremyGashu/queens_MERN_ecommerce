@@ -25,7 +25,7 @@ const DiscountedItem = ({item}) => {
 			<div className="detail-and-cart-container">
 				<div  onClick={() => {
 				}} className="zoomable more-img">
-					<NavLink to={`items/${item._id}`} ><img src={list_image} alt="Detail" /></NavLink>
+					<NavLink to={`/items_detail/${item._id}`} ><img src={list_image} alt="Detail" /></NavLink>
 				</div>	
 
 				<div onClick={() => dispatch(addToCart(item._id))} className="zoomable add-to-cart-img">

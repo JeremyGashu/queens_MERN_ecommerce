@@ -67,9 +67,20 @@ nav div input {
     transform: translateY(-50%);
     padding: 4px;
     font-size: 13px;
-    background-color: rgb(211, 211, 211);
+    background-color: rgb(212, 209, 209);
     border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-right: 3px;
 
+}
+.exitter:hover{
+    background-color: rgb(248, 122, 122);
 }
 /* .nav-toggler {
     opacity: 0.8;

@@ -12,7 +12,7 @@ const itemSchema = new mongoose.Schema({
     category : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Category',
-        default : new mongoose.Types.ObjectId('5f2d419cf88b381a1c5ced34')
+        default : new mongoose.Types.ObjectId('5f3cf840672c8e0017d59a1f')
     },
     price : {
         type : Number,
