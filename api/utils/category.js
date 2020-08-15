@@ -1,12 +1,12 @@
 const ItemCategory = {
-    'ANIMALPRODUCTS' : '5f2d4164f88b381a1c5ced2d',
-    'ELECTRONICS' :'5f2d416cf88b381a1c5ced2e',
-    'BEVERAGES' : '5f2d4174f88b381a1c5ced2f',
-    'HOUSEHOLDS': '5f2d4181f88b381a1c5ced30',
-    'SANITARY' : '5f2d4187f88b381a1c5ced31',
-    'FOODS' : '5f2d418ef88b381a1c5ced32',
-    'COSMOTICS' : '5f2d4195f88b381a1c5ced33',
-    'OTHERS' : '5f2d419cf88b381a1c5ced34'
+    'ANIMAL PRODUCTS' : '5f3cf7e6672c8e0017d59a18',
+    'ELECTRONICS' :'5f3cf7f9672c8e0017d59a19',
+    'BEVERAGES' : '5f3cf80d672c8e0017d59a1a',
+    'HOUSEHOLDS': '5f3cf818672c8e0017d59a1b',
+    'SANITARY' : '5f3cf821672c8e0017d59a1c',
+    'FOODS' : '5f3cf832672c8e0017d59a1d',
+    'COSMOTICS' : '5f3cf839672c8e0017d59a1e',
+    'OTHERS' : '5f3cf840672c8e0017d59a1f'
 }
 
 module.exports = ItemCategory

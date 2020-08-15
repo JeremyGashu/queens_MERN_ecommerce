@@ -27,7 +27,11 @@ const NavBar = (props) => {
 			<h3 className="brand nav-item"><a href="/">Queens Logo</a></h3>
 			<div className="search-bar">
 				<form onSubmit={handleChange} method="POST">
+					<div className="search-bar">
 					<input onChange={handleChange} type="text" placeholder="Search items..." />
+					<span onClick={()=>{dispatch(exitSearch())}} className="exitter">X</span>
+					</div>
+					
 				</form>
 			</div>
 			<ul>
