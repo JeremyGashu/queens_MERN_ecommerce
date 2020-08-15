@@ -14,7 +14,7 @@ const orderRoute = require('./api/routes/orders')
 const adminRoute = require('./api/routes/admins')
 
 
-mongoose.connect('mongodb://localhost/queens_project', {useCreateIndex : true,useNewUrlParser : true, useUnifiedTopology : true})
+mongoose.connect('mongodb+srv://ermias123:ermias123@cluster0.bxdjv.mongodb.net/queens_project?retryWrites=true&w=majority', {useCreateIndex : true,useNewUrlParser : true, useUnifiedTopology : true})
 
 let db = mongoose.connection
 
