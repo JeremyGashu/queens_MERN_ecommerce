@@ -1,5 +1,4 @@
 const express = require('express')
-const morgan = require('morgan')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const path = require('path')
@@ -29,7 +28,6 @@ db.on('error', err => {
 const app = express()
 
 app.use(cookieParser())
-app.use(morgan('dev'))
 app.use(cors())
 app.use('/uploads',express.static('./assets/images/uploads'))
 app.use(express.urlencoded({extended : false}))
