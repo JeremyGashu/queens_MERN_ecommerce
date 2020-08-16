@@ -15,7 +15,7 @@ const DiscountedItem = ({item}) => {
 	return (
 		<div className="item">
 			<div className="zoomable item-image-container">
-				<img src={item_image} alt="" />
+			<img src={`/uploads/${item.imageName}`} alt="" />
 			</div>
 			<div className="price">
 				<span className="old-price">{`${oldPrice} ETB  `} </span> <span className="new-price"> {`${discountedPrice} ETB`}</span>
