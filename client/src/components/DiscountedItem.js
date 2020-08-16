@@ -1,5 +1,4 @@
 import React from 'react';
-import item_image from '../assets/images/agelgil.jpg'
 import list_image from '../assets/images/th-list.svg'
 import {NavLink} from 'react-router-dom'
 import '../discounted.css'
